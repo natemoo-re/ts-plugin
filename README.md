@@ -10,7 +10,7 @@ npx ts-plugin uninstall [plugin-name]
 ## Features
 - Gives users a single-line command to simplifies plugin installation
     - Adds plugin to `tsconfig.json` or `jsconfig.json`
-    - Installs the plugin with NPM as a `devDependency`
+    - Installs the plugin NPM package as a `devDependency`
 - Beautiful, user-friendly CLI interface
 - Automatic plugin name resolution from name shortcuts
     - `ts-plugin install styled` -> resolves and installs `typescript-styled-plugin`
