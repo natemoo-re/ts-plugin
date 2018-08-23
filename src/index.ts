@@ -28,9 +28,11 @@ async function run() {
 
         switch (cmd) {
             case 'install':
+            case 'i':
                 await installPlugin(resolvePluginName(args[1]));
                 break;
             case 'uninstall':
+            case 'u':
                 // await uninstallPlugin(guessPluginName(args[1]));
                 break;
             default: throw new Error(USAGE_DOCS);
