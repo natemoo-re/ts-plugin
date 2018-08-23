@@ -23,7 +23,7 @@ export async function uninstallPlugin(pluginName: Promise<string>) {
 
     try {
         await Promise.all([
-            npm(`i uninstall ${name}`, cwd),
+            npm(`uninstall --save ${name}`, cwd),
             removeFromConfig(name)
         ]);
 
