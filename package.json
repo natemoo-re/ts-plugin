@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc && rollup -c",
+    "dev": "npm run build && npm start",
     "version": "npm build"
   },
   "files": [
@@ -26,15 +27,22 @@
     "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "turbocolor": "^2.6.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "typescript-plugin-stencil": "^0.1.1-alpha",
+    "typescript-styled-plugin": "^0.10.0"
   },
   "author": "Nate Moore",
   "contributors": [
-    { "name": "Nate Moore", "email": "nate@natemoo.re", "url": "https://projects.natemoo.re" }
+    {
+      "name": "Nate Moore",
+      "email": "nate@natemoo.re",
+      "url": "https://projects.natemoo.re"
+    }
   ],
   "license": "MIT",
   "dependencies": {
-    "prompts": "^0.1.14"
+    "prompts": "^0.1.14",
+    "uninstall": "0.0.0"
   },
   "repository": {
     "type": "git",

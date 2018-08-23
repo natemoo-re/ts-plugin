@@ -32,8 +32,20 @@ export async function addToConfig(pluginName: string) {
         const value = Object.assign({}, config, { compilerOptions });
         return writefile(file, JSON.stringify(value, null, 2));
     }
+}
 
-    // throw new Error(`TypeScript config file is missing "compilerOptions".`)
+export async function removeFromConfig(pluginName: string) {
+    if (!file) return;
+
+    const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));
+
+    if (config && !config.compilerOptions) return;
+    if (config && config.compilerOptions && !config.compilerOptions.plugins) return;
+    
+    const plugins = [...(config.compilerOptions.plugins).filter((p: {name: string}) => p.name !== pluginName)];
+    const compilerOptions = Object.assign({}, config.compilerOptions, { plugins });
+    const value = Object.assign({}, config, { compilerOptions });
+    return writefile(file, JSON.stringify(value, null, 2));
 }
 
 async function getInstalledPlugins() {
