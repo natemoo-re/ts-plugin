@@ -54,6 +54,9 @@ export async function resolvePluginName(pluginName: string): Promise<string> {
         if (i > -1) {
             console.log(`${tc.green('✔')} ${tc.bold('Resolved')} plugin ${tc.green('"' + pluginName + '"')} to ${tc.green('"' + variations[i] + '"')}`)
             return variations[i];
+        } else if (pluginName.split('-').length > 1 && await exists(pluginName)) {
+            // Fallback to pluginName if it has at least one dash and exists
+            return pluginName;
         }
 
     }
