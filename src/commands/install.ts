@@ -1,8 +1,8 @@
 import { Spinner } from 'cli-spinner';
 import tc from 'turbocolor';
 
-import { isInstalled, addToConfig} from './project';
-import { npm, onlyUnix, terminalPrompt } from './utils';
+import { isInstalled, addToConfig} from '../project';
+import { npm } from '../utils';
 
 
 
@@ -39,7 +39,7 @@ export async function installPlugin(pluginName: Promise<string>) {
     console.log(`
 
   ${tc.dim('Next steps:')}
-   ${tc.dim('- Make sure your editor is using the')} workspace version ${tc.dim('of TypeScript')}
+  ${tc.dim('- Configure your editor to use the')} workspace version ${tc.dim('of TypeScript (https://git.io/fAtM0)')}
 `);
 
 }

@@ -1,8 +1,8 @@
 import { Spinner } from 'cli-spinner';
 import tc from 'turbocolor';
 
-import { isInstalled, removeFromConfig } from './project';
-import { npm } from './utils';
+import { isInstalled, removeFromConfig } from '../project';
+import { npm } from '../utils';
 
 
 

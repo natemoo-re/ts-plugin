@@ -48,13 +48,13 @@ export async function removeFromConfig(pluginName: string) {
     return writefile(file, JSON.stringify(value, null, 2));
 }
 
-async function getInstalledPlugins() {
+export async function getInstalledPlugins() {
     if (!file) return;
     const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));
     
     if (config && config.compilerOptions) {
         if (config.compilerOptions.plugins) installed = config.compilerOptions.plugins.map((x: any) => x.name);
-        return Promise.resolve();
+        return Promise.resolve(installed);
     }
     throw new Error(`TypeScript config file is missing "compilerOptions".`)
 }

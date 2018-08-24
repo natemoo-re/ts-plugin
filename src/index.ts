@@ -1,6 +1,5 @@
 import tc from 'turbocolor';
-import { installPlugin } from './install';
-import { uninstallPlugin } from './uninstall';
+import { configurePlugin, installPlugin, listPlugins, uninstallPlugin } from './commands';
 import { resolvePluginName, resolveInstalledPluginName } from './resolve-plugin';
 import { scanProject } from './project';
 
@@ -29,11 +28,21 @@ async function run() {
         await scanProject();
 
         switch (cmd) {
+            case 'config':
+            case 'c':
+                (args[1])
+                    ? await configurePlugin(resolveInstalledPluginName(args[1]), ...args.slice(1))
+                    : console.log(Docs(UNINSTALL_DOCS) + '\n');
+                break;
             case 'install':
             case 'i':
                 (args[1])
                     ? await installPlugin(resolvePluginName(args[1]))
                     : console.log(Docs(INSTALL_DOCS) + '\n');
+                break;
+            case 'list':
+            case 'ls':
+                await listPlugins();
                 break;
             case 'uninstall':
             case 'u':
