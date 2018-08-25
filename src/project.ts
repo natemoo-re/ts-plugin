@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { promisify } from 'util';
+import { toShortName } from './utils';
 
 const readdir = promisify(fs.readdir);
 const readfile = promisify(fs.readFile);
@@ -13,12 +14,84 @@ export async function scanProject() {
     return getInstalledPlugins();
 }
 
+async function getConfigForPlugin(pluginName: string): Promise<{ name: string, [key: string]: unknown }> {
+    const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));
+    
+    if (config && config.compilerOptions && config.compilerOptions.plugins && config.compilerOptions.plugins.length) {
+        const plugins = config.compilerOptions.plugins as { name: string, [key: string]: unknown }[];
+        return plugins.filter(p => p.name === pluginName).pop() as { name: string, [key: string]: unknown };
+    } else {
+        return { name: pluginName };
+    }
+}
+
+// TODO handle strings delimited by periods as nested objects
+async function setConfigForPlugin(newConfig: { name: string, [key: string]: unknown }) {
+    const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));
+
+    const pluginName = newConfig.name;
+    const plugins = [...(config.compilerOptions.plugins || []).map((p: { name: string}) => (p.name === pluginName) ? newConfig : p)];
+    const compilerOptions = Object.assign({}, config.compilerOptions, { plugins });
+    const value = Object.assign({}, config, { compilerOptions });
+    return writefile(file, JSON.stringify(value, null, 2));
+}
+
 export async function isInstalled(pluginName: string): Promise<boolean> {
     await getInstalledPlugins();
     return (installed.includes(pluginName));
 }
 
-export async function addToConfig(pluginName: string) {
+export async function addValueToConfig(pluginName: string, key: string, value: any) {
+    if (!file) return;
+
+    const config = await getConfigForPlugin(pluginName);
+    const newConfig = Object.assign({}, config, { [key]: value });
+
+    return setConfigForPlugin(newConfig);
+}
+
+export async function getValuesFromConfig(pluginName?: string) {
+    if (!file) return;
+
+    if (pluginName) {
+        const { name, ...config } = await getConfigForPlugin(pluginName);
+        if (config) return Promise.resolve(config);
+    }
+    // TODO get whole configured values if no name
+    // else {
+    //     if (installed) {
+    //         const plugins = await Promise.all(installed.map(getConfigForPlugin))
+    //         const map = new Map<string, any>();
+    //         plugins.forEach(({ name, ...config }) => {
+    //             map.set(name, config);
+    //         })
+    //         return Promise.resolve();
+    //     }
+    // }
+
+    throw new Error(`Configuration does not exist for plugin "${pluginName}"`);
+}
+
+export async function getValueFromConfig(pluginName: string, key: string) {
+    if (!file) return;
+
+    const { name, ...config } = await getConfigForPlugin(pluginName);
+    if (config && config[key]) return Promise.resolve(config[key]);
+
+    throw new Error(`Configuration key "${key}" does not exist for plugin "${pluginName}"`);
+}
+
+export async function deleteValueFromConfig(pluginName: string, key: string) {
+    if (!file) return;
+    if (key === 'name') throw new Error(`Unable to delete "name" from configuration. To uninstall this plugin, instead try:
+
+  ts-plugin uninstall ${toShortName(pluginName)}`)
+
+    const { [key]: omit, ...config} = await getConfigForPlugin(pluginName);
+    return setConfigForPlugin(config);
+}
+
+export async function addPluginToConfig(pluginName: string) {
     if (!file) return;
 
     const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));
@@ -34,7 +107,7 @@ export async function addToConfig(pluginName: string) {
     }
 }
 
-export async function removeFromConfig(pluginName: string) {
+export async function removePluginFromConfig(pluginName: string) {
     if (!file) return;
 
     const config = await readfile(file).then(buffer => JSON.parse(buffer.toString()));

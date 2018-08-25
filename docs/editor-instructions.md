@@ -35,5 +35,6 @@ Ensure that you are using Visual Studio 2017 and the TypeScript 2.5+ SDK.
 Reload your project to ensure that the plugin has loaded properly.
 
 ---
+
 ### Acknowledgements
 This document has been adapted from Microsoft's [typescript-styled-plugin](https://github.com/Microsoft/typescript-styled-plugin/blob/master/README.md) documentation.

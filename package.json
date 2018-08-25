@@ -29,6 +29,8 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "turbocolor": "^2.6.1",
     "typescript": "^3.0.1",
+    "typescript-plugin-stencil": "^0.1.1-alpha",
+    "typescript-styled-plugin": "^0.10.0",
     "uglify-es": "^3.3.9"
   },
   "author": "Nate Moore",

@@ -1,7 +1,7 @@
 import { Spinner } from 'cli-spinner';
 import tc from 'turbocolor';
 
-import { isInstalled, removeFromConfig } from '../project';
+import { isInstalled, removePluginFromConfig } from '../project';
 import { npm } from '../utils';
 
 
@@ -24,7 +24,7 @@ export async function uninstallPlugin(pluginName: Promise<string>) {
     try {
         await Promise.all([
             npm(`uninstall --save ${name}`, cwd),
-            removeFromConfig(name)
+            removePluginFromConfig(name)
         ]);
 
         loading.stop(true);

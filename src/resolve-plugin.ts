@@ -2,7 +2,7 @@ import tc from 'turbocolor';
 /// @ts-ignore
 import prompts from 'prompts';
 import { exists, downloads, formatNumber } from './utils';
-import { isInstalled } from './project';
+import { isInstalled, getInstalledPlugins } from './project';
 
 export async function resolvePluginName(pluginName: string): Promise<string> {
     if ((pluginName.indexOf('typescript') > -1 || pluginName.indexOf('ts') > -1) && pluginName.indexOf('plugin') > -1) {
@@ -107,6 +107,14 @@ export async function resolveInstalledPluginName(pluginName: string): Promise<st
 
         if (i > -1) {
             return variations[i];
+        } else {
+            const installed = await getInstalledPlugins();
+            let potentialName: string|null = null;
+            installed!.forEach(plugin => {
+                potentialName = (!potentialName && plugin.indexOf(pluginName) > -1) ? plugin : null;
+            });
+
+            if (potentialName) return potentialName;
         }
 
     }

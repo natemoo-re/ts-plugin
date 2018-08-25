@@ -14,7 +14,18 @@
     "outDir": "dist/src",
     "lib": [
       "es2015",
-      "es2016.array.include"
+      "es2016.array.include",
+      "es2017.object"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "tags": [
+          "style",
+          "css",
+          "list"
+        ]
+      }
     ]
   },
   "files": [

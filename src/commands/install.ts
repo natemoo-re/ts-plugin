@@ -1,7 +1,7 @@
 import { Spinner } from 'cli-spinner';
 import tc from 'turbocolor';
 
-import { isInstalled, addToConfig} from '../project';
+import { isInstalled, addPluginToConfig} from '../project';
 import { npm } from '../utils';
 
 
@@ -27,7 +27,7 @@ export async function installPlugin(pluginName: Promise<string>) {
     try {
         await Promise.all([
             npm(`i --save-dev ${name}`, cwd),
-            addToConfig(name)
+            addPluginToConfig(name)
         ]);
 
         loading.stop(true);

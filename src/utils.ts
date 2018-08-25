@@ -90,3 +90,12 @@ export function isWin() {
 export function terminalPrompt() {
     return isWin() ? '>' : '$';
 }
+
+export function toShortName(name: string) {
+    ['ts', 'typescript', 'plugin']
+        .map(str => `\\b${str}\\b`)
+        .forEach(match => {
+            name = name.replace(new RegExp(match), '');
+        });
+    return name.replace(/^-+/, '').replace(/-+$/, '').trim();
+}
